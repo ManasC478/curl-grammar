@@ -1,0 +1,79 @@
+EXAMPLE URLS FOR THE DIFFERENT PATHS:
+http://studentdb.com/schema
+http://studentdb.com/student
+http://studentdb.com/student/c3b7edb6-156a-480e-8684-cfb3f89bc4c4
+
+
+THESE TEST CASES WILL SHOW ALL THE DIFFERENT ERRORS AND SUCCESSFUL RESULTS THAT CAN OCCUR WITH THIS PROGRAM.
+WHEN ENTERING THE STUDENT_ID PLEASE MAKE SURE THE ID IS ACCURATE
+
+***** TEST 1: POST student and GET all students and GET specific student *****
+Enter a curl statement: curl -X POST -H Content-Type: application/json -d {"name": "John", "email": "john@test.com", "age": 19} http://studentdb.com/student
+// Result will show
+Do you want to make another request? (Y/y): y
+Enter a curl statement: curl -X GET http://studentdb.com/student
+// Result will show
+Do you want to make another request? (Y/y): y
+Enter a curl statement: curl -X GET http://studentdb.com/student/{student_id from earlier result}
+// Result will show
+Do you want to make another request? (Y/y): n
+
+***** TEST 2: POST student and DELETE student *****
+***** NOTE: previous written data will still remain *****
+Enter a curl statement: curl -X POST -H Content-Type: application/json -d {"name": "Doe", "email": "doe@test.com", "year": "Junior"} http://studentdb.com/student
+// Result will show
+Do you want to make another request? (Y/y): y
+Enter a curl statement: curl -X GET http://studentdb.com/student
+// Result will show
+Do you want to make another request? (Y/y): y
+Enter a curl statement: curl -X DELETE http://studentdb.com/student/{choose student_id from above result to delete}
+// Result will show
+Do you want to make another request? (Y/y): y
+Enter a curl statement: curl -X GET http://studentdb.com/student
+// Result will show
+Do you want to make another request? (Y/y): n
+
+***** TEST 3: Raise Syntax and API Errors with PATCH student, then do valid PATCH student request *****
+***** NOTE: previous written data will still remain *****
+Enter a curl statement: curl -X PATCH -H Content-Type: text/html -d {"age": 22, "major": "CS", "university": "SJSU"} http://studentdb.com/student/{choose student_id from db.json to modify}
+// Content type error will show
+Do you want to make another request? (Y/y): y
+Enter a curl statement: curl -X PATCH -H Content-Type: application/json {"age": "22", "major": "CS", "university": "SJSU"} http://studentdb.com/student/{choose same student_id from previous statement}
+// Data payload error will show
+Do you want to make another request? (Y/y): y
+Enter a curl statement: curl -X PATCH -H Content-Type: application/json -d {"age": "22", "major": "CS", "university": "SJSU"} http://studentdb.com/student/{choose same student_id from previous statement}
+// Contraint error will show
+Do you want to make another request? (Y/y): y
+Enter a curl statement: curl -X PATCH -H Content-Type: application/json -d {"age": 22, "major": "CS", "university": "SJSU"} http://studentdb.com/student/{choose same student_id from previous statement}
+// Result will show
+Do you want to make another request? (Y/y): n
+
+***** TEST 4: GET schema, POST student with invalid path, POST valid student, DELETE all students *****
+***** NOTE: previous written data will still remain *****
+Enter a curl statement: curl -X GET http://studentdb.com/schema
+// Result will show
+Do you want to make another request? (Y/y): y
+Enter a curl statement: curl -X POST -H Content-Type: application/json -d {"name": "lorem", "email": "lorem@test.com", "links": ["linkedin", "github"], "bio": "Lorem ipsum"} http://studentdb.com/student/64f1aed0-f730-4b86-ba16-97d0c8edef85
+// Error will show
+Do you want to make another request? (Y/y): y
+Enter a curl statement: curl -X POST -H Content-Type: application/json -d {"name": "lorem", "email": "lorem@test.com", "links": ["linkedin", "github"], "bio": "Lorem ipsum"} http://studentdb.com/student/
+// Result will show
+Do you want to make another request? (Y/y): y
+Enter a curl statement: curl -X GET http://studentdb.com/student
+// Result will show
+Do you want to make another request? (Y/y): y
+Enter a curl statement: curl -X DELETE http://studentdb.com/student
+// Result will show
+Do you want to make another request? (Y/y): n
+
+***** TEST 5: Raise Syntax Errors *****
+***** NOTE: previous written data will still remain *****
+Enter a curl statement: curl -X POST -d {"name": "John", "email": "john@test.com"} http://studentdb.com/student
+// Header error will show
+Do you want to make another request? (Y/y): y
+Enter a curl statement: curl -X POST -H Content-Type: application/json http://studentdb.com/student
+// JSON payload error will show
+Do you want to make another request? (Y/y): y
+Enter a curl statement: curl -X OPTION http://studentdb.com/student
+// Method error will show
+Do you want to make another request? (Y/y): n

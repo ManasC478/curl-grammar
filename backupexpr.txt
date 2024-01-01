@@ -1,0 +1,35 @@
+grammar Expr;
+
+prog: curl_statement EOF;
+
+curl_statement: get_stmt | post_stmt | patch_stmt | delete_stmt;
+
+get_stmt: CURL (method='-X GET')? urlpath=url;
+
+post_stmt: CURL method='-X POST' '-H Content-Type: application/json' '-d' data=json urlpath=url;
+
+patch_stmt: CURL method='-X PATCH' '-H Content-Type: application/json' '-d' data=json urlpath=url;
+
+delete_stmt: CURL method='-X DELETE' urlpath=url;
+
+url: DOMAIN '/' path;
+
+path: 'student' | 'student/'IDENTIFIER | 'schema';
+
+json: '{' key_value (',' key_value)* '}';
+
+key_value: STRING ':' value;
+
+key: STRING;
+
+value: STRING | NUMBER | ZERO ;
+
+CURL: 'curl';
+DOMAIN: 'http://studentdb.com';
+IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
+STRING: '\'' ~'\''* '\'';
+NUMBER: '-'?[1-9][0-9]*;
+ZERO: '0';
+INT : '-'? [0-9]+;
+NEWLINE : [\r\n]+;
+WS : [ \t\n]+ -> skip;
